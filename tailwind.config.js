@@ -23,8 +23,8 @@ export default {
         White: 'hsl(0, 0%, 100%)',
       },
       backgroundImage: {
-        'bg-sidebar-mobile': "url('/assets/images/bg-sidebar-mobile.svg')",
-        'bg-sidebar-desktop': "url('/assets/images/bg-sidebar-desktop.svg')",
+        'bg-sidebar-mobile': "url('src/assets/images/bg-sidebar-mobile.svg')",
+        'bg-sidebar-desktop': "url('src/assets/images/bg-sidebar-desktop.svg')",
       },
     },
   },

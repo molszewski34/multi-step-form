@@ -4,6 +4,7 @@ import { FormStageOne } from './components/FormStageOne';
 import { FormStageTwo } from './components/FormStageTwo';
 import { FormStageThree } from './components/FormStageThree';
 import { FormStageFour } from './components/FormStageFour';
+import { FormStageFive } from './components/FornStageFive';
 import SideBar from './components/SideBar';
 import Footer from './components/Footer';
 interface MyFormData {
@@ -37,6 +38,8 @@ const App: React.FC = () => {
     phoneNumber: '',
     selectedButton: '',
   });
+  const [formInputValue, setInputValue] = useState('');
+
   const [addons, setAddons] = useState<Addon[]>([
     {
       name: 'Online service',
@@ -57,7 +60,7 @@ const App: React.FC = () => {
 
   const [selectedPlan, setSelectedPlan] = useState('');
   const [selectedPlanPrice, setSelectedPlanPrice] = useState<number>(1);
-
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const calculateAddonPrice = (addon: Addon): number => {
     return isYearly ? addon.price * 10 : addon.price;
   };
@@ -65,6 +68,7 @@ const App: React.FC = () => {
   const {
     register,
     handleSubmit,
+
     formState: { errors },
   } = useForm<MyFormData>();
 
@@ -82,75 +86,100 @@ const App: React.FC = () => {
     setStage(stage - 1);
   };
 
-  return (
-    <main className="bg-Magnolia h-screen">
-      <SideBar stage={stage} />
-      <section className="bg-White mx-4 mt-[-4.5em] border-none rounded-xl p-6">
-        {stage === 1 && (
-          <FormStageOne
-            register={register}
-            handleSubmit={handleSubmit(onSubmitStageOne)}
-            errors={errors}
-          />
-        )}
-        {stage === 2 && (
-          <FormStageTwo
-            goBack={goBack}
-            setStage={setStage}
-            register={register}
-            handleSubmit={handleSubmit(onSubmitStageTwo)}
-            arcade={arcade}
-            setArcade={setArcade}
-            advanced={advanced}
-            setAdvanced={setAdvanced}
-            pro={pro}
-            setPro={setPro}
-            isYearly={isYearly}
-            setIsYearly={setIsYearly}
-            onlineServices={onlineServices}
-            setOnlineServices={setOnlineServices}
-            largerStorage={largerStorage}
-            setLargerStorage={setLargerStorage}
-            customizableProfile={customizableProfile}
-            setCustomizableProfile={setCustomizableProfile}
-            selectedPlan={selectedPlan}
-            setSelectedPlan={setSelectedPlan}
-            selectedPlanPrice={selectedPlanPrice}
-            setSelectedPlanPrice={setSelectedPlanPrice}
-          />
-        )}
+  const handleFormSubmit = () => {
+    // Your form submission logic here
+    console.log('Form submitted!');
+  };
 
-        {stage === 3 && (
-          <FormStageThree
-            checkedCheckboxes={checkedCheckboxes}
-            setCheckedCheckboxes={setCheckedCheckboxes}
-            goBack={goBack}
-            setStage={setStage}
-            onlineServices={onlineServices}
-            setOnlineServices={setOnlineServices}
-            largerStorage={largerStorage}
-            setLargerStorage={setLargerStorage}
-            customizableProfile={customizableProfile}
-            setCustomizableProfile={setCustomizableProfile}
-            addons={addons.map((addon) => ({
-              ...addon,
-              price: calculateAddonPrice(addon),
-            }))}
-          />
-        )}
-        {stage === 4 && (
-          <FormStageFour
-            goBack={goBack}
-            setStage={setStage}
-            selectedPlan={selectedPlan}
-            selectedPlanPrice={selectedPlanPrice}
-            isYearly={isYearly}
-            checkedCheckboxes={checkedCheckboxes}
-          />
-        )}
-      </section>
-      <Footer goBack={goBack} stage={stage} setStage={setStage} />
-    </main>
+  return (
+    <div className="bg-Magnolia ">
+      <main className="bg-Magnolia md:bg-White h-screen flex flex-col md:flex-row">
+        <SideBar stage={stage} />
+        <div className="flex flex-col">
+          <section className="bg-White mx-4 mt-[-4.5em] border-none rounded-xl p-6 shadow-lg">
+            {stage !== 5 && !isConfirmed ? (
+              <>
+                {stage === 1 && (
+                  <FormStageOne
+                    register={register}
+                    handleSubmit={handleSubmit(onSubmitStageOne)}
+                    errors={errors}
+                    formInputValue={formInputValue}
+                  />
+                )}
+                {stage === 2 && (
+                  <FormStageTwo
+                    goBack={goBack}
+                    setStage={setStage}
+                    register={register}
+                    handleSubmit={handleSubmit(onSubmitStageTwo)}
+                    arcade={arcade}
+                    setArcade={setArcade}
+                    advanced={advanced}
+                    setAdvanced={setAdvanced}
+                    pro={pro}
+                    setPro={setPro}
+                    isYearly={isYearly}
+                    setIsYearly={setIsYearly}
+                    onlineServices={onlineServices}
+                    setOnlineServices={setOnlineServices}
+                    largerStorage={largerStorage}
+                    setLargerStorage={setLargerStorage}
+                    customizableProfile={customizableProfile}
+                    setCustomizableProfile={setCustomizableProfile}
+                    selectedPlan={selectedPlan}
+                    setSelectedPlan={setSelectedPlan}
+                    selectedPlanPrice={selectedPlanPrice}
+                    setSelectedPlanPrice={setSelectedPlanPrice}
+                  />
+                )}
+
+                {stage === 3 && (
+                  <FormStageThree
+                    checkedCheckboxes={checkedCheckboxes}
+                    setCheckedCheckboxes={setCheckedCheckboxes}
+                    goBack={goBack}
+                    setStage={setStage}
+                    onlineServices={onlineServices}
+                    setOnlineServices={setOnlineServices}
+                    largerStorage={largerStorage}
+                    setLargerStorage={setLargerStorage}
+                    customizableProfile={customizableProfile}
+                    setCustomizableProfile={setCustomizableProfile}
+                    addons={addons.map((addon) => ({
+                      ...addon,
+                      price: calculateAddonPrice(addon),
+                    }))}
+                    isYearly={isYearly}
+                  />
+                )}
+                {stage === 4 && (
+                  <FormStageFour
+                    goBack={goBack}
+                    setStage={setStage}
+                    selectedPlan={selectedPlan}
+                    selectedPlanPrice={selectedPlanPrice}
+                    isYearly={isYearly}
+                    checkedCheckboxes={checkedCheckboxes}
+                  />
+                )}
+              </>
+            ) : (
+              isConfirmed && <FormStageFive />
+            )}
+          </section>
+          {stage != 5 && (
+            <Footer
+              goBack={goBack}
+              stage={stage}
+              setStage={setStage}
+              isConfirmed={isConfirmed}
+              setIsConfirmed={setIsConfirmed}
+            />
+          )}
+        </div>
+      </main>
+    </div>
   );
 };
 

@@ -1,3 +1,5 @@
+import Header from './Header';
+
 interface FormStageFourProps {
   selectedPlan: string;
   selectedPlanPrice: number;
@@ -14,32 +16,52 @@ export const FormStageFour: React.FC<FormStageFourProps> = ({
   selectedPlanPrice,
   isYearly,
   checkedCheckboxes,
-  goBack,
 }) => {
+  const totalPrice = checkedCheckboxes.reduce(
+    (accumulator, addon) => accumulator + addon.price,
+    selectedPlanPrice
+  );
   return (
-    <div className="">
-      <h1> Finishing up</h1>
-      <h2> Double-check everything looks OK before confirming.</h2>
-      <div className="">
-        <div className="">
-          <p>{selectedPlan}</p>
-          <span onClick={() => setStage(1)}>Change</span>
-        </div>
-        <div className="">
-          ${selectedPlanPrice}/{isYearly ? 'mo' : 'yr'}
-        </div>
-      </div>
-      <div className="">
-        {checkedCheckboxes.map((addon, index) => (
-          <div key={index} className="">
-            <p>{addon.name}</p>
-            <span>{addon.price}</span>
+    <div className="flex flex-col gap-2">
+      <Header
+        title="Finishing up"
+        subtitle="  Double-check everything looks OK before confirming."
+      />
+      <div className="flex flex-col bg-Alabaster py-6 px-4">
+        <div className="flex justify-between ">
+          <div className="">
+            <p className="text-Marine-blue font-semibold">
+              {`${selectedPlan} ${isYearly ? '(Yearly)' : '(Montly)'}`}
+            </p>
+            <span
+              className="text-Cool-gray underline"
+              onClick={() => setStage(1)}
+            >
+              Change
+            </span>
           </div>
-        ))}
+          <div className="text-Marine-blue font-bold">
+            ${selectedPlanPrice}/{isYearly ? 'yr' : 'mo'}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          {checkedCheckboxes.map((addon, index) => (
+            <div key={index} className="flex justify-between">
+              <p className="text-Cool-gray font-semibold">{addon.name}</p>
+              <span className="text-Marine-blue ">
+                ${addon.price}/{isYearly ? 'yr' : 'mo'}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="">
-        <button onClick={goBack}>Go Back</button>
-        <button onClick={() => setStage(4)}>Next</button>
+      <div className="flex justify-between px-4">
+        <p className="text-Cool-gray">
+          Total {isYearly ? '(per year)' : '(per month)'}
+        </p>
+        <p className="text-Purplish-blue font-semibold">{`$${totalPrice}/${
+          isYearly ? 'yr' : 'mo'
+        }`}</p>
       </div>
     </div>
   );
